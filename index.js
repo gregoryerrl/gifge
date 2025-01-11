@@ -79,7 +79,7 @@ app.get("/generate-countdown", (req, res) => {
     res.status(500).send("Error generating GIF");
   }
 });
-
+2;
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

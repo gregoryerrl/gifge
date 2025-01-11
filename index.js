@@ -1,13 +1,7 @@
 const express = require("express");
-const {registerFont, createCanvas} = require("canvas");
+const {createCanvas} = require("canvas");
 const GIFEncoder = require("gif-encoder");
 const app = express();
-
-const fs = require("fs");
-const path = require("path");
-registerFont(path.join(__dirname, "fonts", "DejaVuSans.ttf"), {
-  family: "DejaVuSans",
-});
 
 function createFrame(
   timeStr,
@@ -22,7 +16,8 @@ function createFrame(
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, width, height);
 
-  ctx.font = "bold 60px DejaVuSans";
+  ctx.font =
+    "bold 60px Arial, Helvetica, sans-serif, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif";
   ctx.fillStyle = textColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -85,7 +80,7 @@ app.get("/generate-countdown", (req, res) => {
     res.status(500).send("Error generating GIF");
   }
 });
-2;
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

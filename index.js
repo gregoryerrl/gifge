@@ -3,6 +3,8 @@ const {registerFont, createCanvas} = require("canvas");
 const GIFEncoder = require("gif-encoder");
 const app = express();
 
+const fs = require("fs");
+const path = require("path");
 registerFont(path.join(__dirname, "fonts", "DejaVuSans.ttf"), {
   family: "DejaVuSans",
 });

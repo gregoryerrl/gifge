@@ -1,7 +1,11 @@
 const express = require("express");
-const {createCanvas} = require("canvas");
+const {registerFont, createCanvas} = require("canvas");
 const GIFEncoder = require("gif-encoder");
+const path = require("path");
+
 const app = express();
+
+registerFont(path.join(__dirname, "DejaVuSans.ttf"), {family: "DejaVuSans"});
 
 function createFrame(
   timeStr,
@@ -16,8 +20,7 @@ function createFrame(
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, width, height);
 
-  ctx.font =
-    "bold 60px Arial, Helvetica, sans-serif, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif";
+  ctx.font = '30px "DejaVuSans"';
   ctx.fillStyle = textColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

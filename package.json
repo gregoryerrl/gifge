@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "install": "apt-get update && apt-get install -y fontconfig && npm install"
+    "postinstall": "apt-get update && apt-get install -y fontconfig fonts-dejavu-core && fc-cache -f -v"
   },
   "dependencies": {
     "canvas": "^3.0.1",

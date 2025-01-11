@@ -9,6 +9,7 @@ registerFont(path.join(__dirname, "DejaVuSans.ttf"), {family: "DejaVuSans"});
 
 function createFrame(
   timeStr,
+  fontSize = "90px",
   width = 400,
   height = 200,
   bgColor = "#000000",
@@ -20,7 +21,7 @@ function createFrame(
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, width, height);
 
-  ctx.font = '30px "DejaVuSans"';
+  ctx.font = `${fontSize} "DejaVuSans"`;
   ctx.fillStyle = textColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -35,12 +36,16 @@ app.get("/generate-countdown", (req, res) => {
     const hours = parseInt(req.query.hours) || 0;
     const minutes = parseInt(req.query.minutes) || 0;
     const seconds = parseInt(req.query.seconds) || 0;
-    const duration = Math.min(parseInt(req.query.duration) || 60, 60);
+    const fontSize = req.query.fontSize || "90";
     const width = parseInt(req.query.width) || 400;
     const height = parseInt(req.query.height) || 200;
     const bgColor = req.query.bgColor || "#000000";
     const textColor = req.query.textColor || "#FF0000";
     const fps = parseInt(req.query.fps) || 1;
+
+    if (typeof fontSize === "string" && !fontSize.includes("px")) {
+      fontSize += "px"; // Append 'px' if not present
+    }
 
     res.setHeader("Content-Type", "image/gif");
     res.setHeader("Content-Disposition", 'inline; filename="countdown.gif"');
@@ -62,7 +67,7 @@ app.get("/generate-countdown", (req, res) => {
     encoder.writeHeader();
 
     const totalTimeSeconds = hours * 3600 + minutes * 60 + seconds;
-    const totalFrames = Math.min(duration * fps, totalTimeSeconds * fps);
+    const totalFrames = Math.min(60 * fps, totalTimeSeconds * fps);
 
     for (let frame = 0; frame <= totalFrames; frame++) {
       const remainingSeconds = totalTimeSeconds - Math.floor(frame / fps);
@@ -73,7 +78,14 @@ app.get("/generate-countdown", (req, res) => {
       const timeStr = `${h.toString().padStart(2, "0")}:${m
         .toString()
         .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-      const frameData = createFrame(timeStr, width, height, bgColor, textColor);
+      const frameData = createFrame(
+        timeStr,
+        fontSize,
+        width,
+        height,
+        bgColor,
+        textColor
+      );
       encoder.addFrame(frameData);
     }
 
